@@ -1,6 +1,6 @@
 ## -- INITIALIZERによる挿入 --
 # 各モジュールのymlは、小分けにしたroleをincludeするだけのシンプルさを保ちます。
-- hosts: webservers
+- hosts: ldap
   #   become_user: vagrant
   #   become: yes
   roles:

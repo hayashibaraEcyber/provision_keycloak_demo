@@ -1,7 +1,0 @@
-## -- INITIALIZERによる挿入 --
-[webservers]
-127.0.0.1
-
-[dbservers]
-127.0.0.1
-## -- INITIALIZERによる挿入 --

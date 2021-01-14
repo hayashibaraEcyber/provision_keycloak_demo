@@ -1,0 +1,2 @@
+users:
+  - {name: "ecyber", password: "$1$WwWsrC.e$Vr5h85X04WV2ospp/irXo0", groups: "wheel"}
