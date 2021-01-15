@@ -1,0 +1,30 @@
+- name: set OS name
+  shell: uname -s
+  register: os_name
+
+- name: show OS name
+  debug:
+    msg: "{{ os_name }}"
+
+- name: set CPU name
+  shell: uname -m
+  register: cpu_name
+
+- name: show CPU name
+  debug:
+    msg: "{{ cpu_name }}"
+
+- name: Download docker-compose
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_ver }}/docker-compose-{{ os_name.stdout }}-{{ cpu_name.stdout }}"
+    dest: /usr/local/bin/docker-compose
+    force: yes
+    mode: 0755
+  when: not ansible_check_mode
+
+- name: Create docker-compose symbolic link
+  file:
+    src: "/usr/local/bin/docker-compose"
+    dest: "/usr/bin/docker-compose"
+    state: link
+  when: not ansible_check_mode

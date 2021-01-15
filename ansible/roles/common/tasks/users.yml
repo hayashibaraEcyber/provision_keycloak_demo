@@ -1,0 +1,63 @@
+- name: add users
+  user:
+    name: "{{item.name}}"
+    groups: 
+      - "{{item.groups}}"
+    state: present
+  with_items: "{{users}}"
+  tags: users
+
+- name: create ~/.ssh for users
+  file:
+    path: "/home/{{item.name}}/.ssh"
+    owner: "{{item.name}}"
+    group: "{{item.name}}"
+    mode: 0700
+    state: directory
+  with_items: "{{users}}"
+  tags: users
+
+- name: deploy authorized keys
+  copy:
+    src: "id_rsa.pub"
+    dest: "/home/{{item.name}}/.ssh/authorized_keys"
+    owner: "{{item.name}}"
+    group: "{{item.name}}"
+    mode: 0600
+  with_items: "{{users}}"
+  tags: users
+
+- name: sudoer
+  lineinfile:
+    dest: "/etc/sudoers.d/{{item.name}}"
+    line: "{{item.name}} ALL=(ALL) NOPASSWD:ALL"
+    create: yes
+    owner: root
+    group: root
+    mode: 0440
+  with_items: "{{users}}"
+  tags: users
+
+- name: deny password login
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    insertafter: "^#PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  become: yes
+
+- name: deny challenge response authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^ChallengeResponseAuthentication"
+    insertafter: "^#ChallengeResponseAuthentication"
+    line: "ChallengeResponseAuthentication no"
+  become: yes
+
+- name: deny root login
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    insertafter: "^#PermitRootLogin"
+    line: "PermitRootLogin no"
+  become: yes

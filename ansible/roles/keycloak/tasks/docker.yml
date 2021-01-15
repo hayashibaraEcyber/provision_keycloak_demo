@@ -1,0 +1,60 @@
+- name: remove old docker package
+  yum: 
+    name:
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-engine
+    state: absent
+  tags: docker
+
+- name: install util package for docker
+  yum: 
+    name:
+      - device-mapper-persistent-data
+      - lvm2
+    state: latest
+  tags: docker
+
+- name: add docker repo.
+  yum_repository:
+    name: docker
+    description: docker yum repo
+    baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+  tags: docker
+
+- name: install docker-ce
+  yum: 
+    name: 
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: latest
+  when: not ansible_check_mode
+  tags: docker
+
+- name: add docker group
+  group:
+    name: docker
+    state: present
+  tags: docker
+
+- name: join docker group
+  user:
+    name: "{{item.name}}"
+    groups: 
+      - docker
+    append: yes
+  with_items: "{{users}}"
+  tags: docker
+
+- name: start docker & enable service
+  service:
+    name: docker
+    state: restarted
+    enabled: yes
+  tags: docker

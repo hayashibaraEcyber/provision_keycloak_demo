@@ -1,0 +1,48 @@
+- name: create virtual root
+
+- name: yum install certbot package
+  yum:
+    name:
+      - certbot
+      - certbot-apache
+      - python-certbot-apache
+    state: latest
+
+- name: Set config to stop and restart with running certbot
+  become: yes
+  replace:
+    dest: /etc/sysconfig/certbot
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+    backup: yes
+  with_items:
+    - {
+        "regexp": '^PRE_HOOK=""$',
+        "replace": 'PRE_HOOK="--pre-hook ''systemctl stop httpd''"',
+      }
+    - {
+        "regexp": '^POST_HOOK=""$',
+        "replace": 'POST_HOOK="--post-hook ''systemctl restart httpd''"',
+      }
+    - {
+        "regexp": '^RENEW_HOOK=""$',
+        "replace": 'RENEW_HOOK="--renew-hook ''systemctl restart httpd''"',
+      }
+  when: not ansible_check_mode
+
+- name: Check privkey.pem exists
+  stat: {
+    path: "/etc/letsencrypt/live/{{ keycloak_domain }}/privkey.pem"
+  }
+  register: fm
+  when: not ansible_check_mode
+
+- name: Get certs
+  become: yes
+  shell: |
+    certbot certonly -m {{ keycloak_email }} |
+      --agree-tos --non-interactive $* |
+      --webroot -w {{ httpd.document_root }} |
+      -d {{ keycloak_domain }}
+  when: not fm.stat.exists
+

@@ -3,6 +3,10 @@
 [keycloak]
 192.168.33.12
 
+[keycloak:vars]
+keycloak_domain=kc.cypochi.com
+keycloak_email=test@example.com
+
 [web]
 192.168.33.13
 

@@ -1,3 +1,4 @@
 - hosts: keycloak
   roles:
     - common
+    - keycloak

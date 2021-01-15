@@ -1,0 +1,20 @@
+- name: yum install repos
+  yum: 
+    name:
+      - epel-release
+      - https://repo.ius.io/ius-release-el7.rpm 
+    state: latest
+
+- name: yum update all
+  yum: 
+    name: '*'
+    state: latest
+
+- name: yum install basic package
+  yum: 
+    name:
+      - kernel-headers
+      - kernel-devel
+      - gcc
+      - bzip2
+    state: latest
