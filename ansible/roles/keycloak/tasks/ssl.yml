@@ -1,5 +1,3 @@
-- name: create virtual root
-
 - name: yum install certbot package
   yum:
     name:
@@ -35,14 +33,14 @@
     path: "/etc/letsencrypt/live/{{ keycloak_domain }}/privkey.pem"
   }
   register: fm
-  when: not ansible_check_mode
+  # when: not ansible_check_mode
 
 - name: Get certs
   become: yes
   shell: |
-    certbot certonly -m {{ keycloak_email }} |
-      --agree-tos --non-interactive $* |
-      --webroot -w {{ httpd.document_root }} |
+    certbot certonly --standalone --agree-tos --non-interactive $* |
+      -m {{ keycloak_email }} |
       -d {{ keycloak_domain }}
-  when: not fm.stat.exists
-
+  when:
+    - fm.stat.exists is defined
+    - not fm.stat.exists
