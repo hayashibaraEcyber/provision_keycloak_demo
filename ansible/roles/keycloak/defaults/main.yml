@@ -1,1 +1,4 @@
-# 
+# vars 
+users:
+  - {name: "ecyber", groups: "wheel"}
+  - {name: "keycloak", groups: "wheel"}

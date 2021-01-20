@@ -14,13 +14,21 @@
   debug:
     msg: "{{ cpu_name }}"
 
+- name: Check privkey.pem exists
+  stat: {
+    path: "/usr/local/bin/docker-compose"
+  }
+  register: fm
+
 - name: Download docker-compose
   get_url:
     url: "https://github.com/docker/compose/releases/download/{{ docker_compose_ver }}/docker-compose-{{ os_name.stdout }}-{{ cpu_name.stdout }}"
     dest: /usr/local/bin/docker-compose
     force: yes
     mode: 0755
-  when: not ansible_check_mode
+  when:
+    - fm.stat.exists is defined
+    - not fm.stat.exists
 
 - name: Create docker-compose symbolic link
   file:

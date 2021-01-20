@@ -1,4 +1,5 @@
 - hosts: keycloak
+  become: yes
   roles:
     - common
     - keycloak

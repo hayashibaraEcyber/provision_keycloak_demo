@@ -37,10 +37,10 @@
 
 - name: Get certs
   become: yes
-  shell: |
-    certbot certonly --standalone --agree-tos --non-interactive $* |
-      -m {{ keycloak_email }} |
-      -d {{ keycloak_domain }}
+  shell: >
+    certbot certonly --standalone --agree-tos --non-interactive $* 
+      --email {{ keycloak_email }} 
+      --domain {{ keycloak_domain }}
   when:
     - fm.stat.exists is defined
     - not fm.stat.exists

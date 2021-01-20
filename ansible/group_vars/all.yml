@@ -1,4 +1,1 @@
-users:
-  - {name: "ecyber", groups: "wheel"}
-
 docker_compose_ver: 1.27.4
