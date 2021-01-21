@@ -31,9 +31,9 @@
   tags: keycloak
 
 - name: copy docker-compose.yml
-  copy:
-    src: docker-compose.yml
-    dest: /home/keycloak/
+  template:
+    src: docker-compose.j2
+    dest: /home/keycloak/docker-compose.yml
     owner: keycloak
     group: keycloak
     mode: 0644

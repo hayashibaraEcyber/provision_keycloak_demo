@@ -8,8 +8,6 @@ services:
       - 443:443
     volumes:
       - ./nginx/certs:/etc/nginx/certs:ro
-      - /etc/nginx/vhost.d
-      - /usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
     restart: always
     depends_on:
@@ -21,13 +19,13 @@ services:
     image: jrcs/letsencrypt-nginx-proxy-companion:2.0.2
     container_name: nginx-letsencrypt
     volumes:
-      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
     volumes_from:
       - nginx-proxy
     restart: always
     depends_on:
-      - keycloak
+      - nginx-proxy
     networks:
       - keycloak
 
@@ -43,8 +41,11 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
       JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
+      VIRTUAL_HOST: {{ server_domain }}
+      LETSENCRYPT_HOST: {{ server_domain }}
+      LETSENCRYPT_EMAIL: {{ server_email }}
     ports:
-      - 18080:8080
+      - 8080:8080
     command: ["-b 0.0.0.0", "--server-config=standalone.xml"]
     depends_on:
       - mariadb
