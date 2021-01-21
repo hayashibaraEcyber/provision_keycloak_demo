@@ -2,4 +2,6 @@
   become: yes
   roles:
     - common
+    - docker
+    # - ssl
     - keycloak

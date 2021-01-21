@@ -1,4 +1,2 @@
-# common main
-- include: docker.yml
-- include: docker_compose.yml
-- include: ssl.yml
+# keycloak main
+- include: keycloak.yml

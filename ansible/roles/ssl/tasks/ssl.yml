@@ -2,8 +2,6 @@
   yum:
     name:
       - certbot
-      - certbot-apache
-      - python-certbot-apache
     state: latest
 
 - name: Set config to stop and restart with running certbot
@@ -28,19 +26,21 @@
       }
   when: not ansible_check_mode
 
-- name: Check privkey.pem exists
+- name: check privkey.pem exists
   stat: {
-    path: "/etc/letsencrypt/live/{{ keycloak_domain }}/privkey.pem"
+    path: "/etc/letsencrypt/live/{{ server_domain }}/privkey.pem"
   }
   register: fm
   # when: not ansible_check_mode
 
-- name: Get certs
+- name: get certs
   become: yes
   shell: >
-    certbot certonly --standalone --agree-tos --non-interactive $* 
-      --email {{ keycloak_email }} 
-      --domain {{ keycloak_domain }}
+     certbot certonly
+       --standalone
+       -n
+       -m {{ server_email }}
+       -d {{ server_domain }}
   when:
     - fm.stat.exists is defined
     - not fm.stat.exists

@@ -1,0 +1,4 @@
+- name: keycloak domain
+  debug:
+    msg: "domain:{{ server_domain }}"
+  tags: keycloak

@@ -1,0 +1,3 @@
+# common main
+- include: docker.yml
+- include: docker_compose.yml
