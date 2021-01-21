@@ -1,4 +1,47 @@
-- name: keycloak domain
-  debug:
-    msg: "domain:{{ server_domain }}"
+- name: add docker group
+  group:
+    name: keycloak
+    state: present
+  tags: keycloak
+
+- name: create data/conf dir.
+  file:
+    path: "/home/keycloak/{{ item }}"
+    state: directory
+    owner: keycloak
+    group: keycloak
+    mode: 0755
+  with_items:
+    - mysql/data
+    - nginx/conf
+    - nginx/certs
+    - nginx/log
+  tags: keycloak
+
+- name: copy nginx conf
+  copy:
+    src: "{{ item }}"
+    dest: /home/keycloak/nginx/conf/
+    owner: keycloak
+    group: keycloak
+    mode: 0644
+  with_items:
+    - default.conf
+    - nginx.conf
+  tags: keycloak
+
+- name: copy docker-compose.yml
+  copy:
+    src: docker-compose.yml
+    dest: /home/keycloak/
+    owner: keycloak
+    group: keycloak
+    mode: 0644
+  tags: keycloak
+
+- name: spin up docker-compose
+  shell: docker-compose up -d
+  args:
+    chdir: /home/keycloak
+  become: yes
   tags: keycloak
