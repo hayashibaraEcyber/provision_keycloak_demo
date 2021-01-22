@@ -20,7 +20,7 @@
     state: latest
   tags: docker
 
-- name: add Docker repo
+- name: add docker repo
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
     dest: /etc/yum.repos.d/docer-ce.repo

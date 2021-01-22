@@ -1,0 +1,43 @@
+- name: show server domain
+  debug:
+    msg: "{{ server_domain }}"
+  tags: httpd
+
+- name: create data/conf dir.
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - /etc/httpd/conf/
+    - /var/log/httpd/
+    - /var/www/html/
+    - /home/web/nginx/conf
+    - /home/web/nginx/certs
+    - /home/web/nginx/log
+  tags: web
+
+- name: copy docker-compose.yml
+  template:
+    src: docker-compose.j2
+    dest: /home/web/docker-compose.yml
+    owner: web
+    mode: 0644
+  tags: web
+
+- name: check docker-compose.yml dir.
+  stat: {
+    path: "/home/web/docker-compose.yml"
+  }
+  register: fm
+  tags: web
+
+- name: spin up docker-compose
+  shell: docker-compose up -d
+  args:
+    chdir: /home/web
+  become: yes
+  when:
+    - fm.stat.exists is defined
+    - fm.stat.exists
+  tags: web

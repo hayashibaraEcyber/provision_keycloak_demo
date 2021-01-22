@@ -1,0 +1,50 @@
+version: '3'
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy:{{ nginx_proxy_ver }}
+    container_name: nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: always
+    depends_on:
+      - httpd
+    networks:
+      - web
+
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion:{{ letsencrypt_nginx_proxy_companion_ver }}
+    container_name: nginx-letsencrypt
+    volumes:
+      - ./nginx/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    volumes_from:
+      - nginx-proxy
+    restart: always
+    depends_on:
+      - nginx-proxy
+    networks:
+      - web
+
+  httpd:
+    image: httpd:{{ httpd_ver }}
+    container_name: httpd
+    volumes:
+      - /etc/httpd/conf/:/usr/local/apache2/conf/
+      - /var/www/html/:/usr/local/apache2/htdocs/
+      - /var/log/httpd/:/var/log/apache2/:rw
+    environment:
+      VIRTUAL_HOST: {{ server_domain }}
+      LETSENCRYPT_HOST: {{ server_domain }}
+      LETSENCRYPT_EMAIL: {{ server_email }}
+    ports:
+      - 18080:80
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge

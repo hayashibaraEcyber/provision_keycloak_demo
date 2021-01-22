@@ -43,6 +43,7 @@
     insertafter: "^#PasswordAuthentication"
     line: "PasswordAuthentication no"
   become: yes
+  tags: users
 
 - name: deny challenge response authentication
   lineinfile:
@@ -51,6 +52,7 @@
     insertafter: "^#ChallengeResponseAuthentication"
     line: "ChallengeResponseAuthentication no"
   become: yes
+  tags: users
 
 - name: deny root login
   lineinfile:
@@ -59,3 +61,11 @@
     insertafter: "^#PermitRootLogin"
     line: "PermitRootLogin no"
   become: yes
+  tags: users
+
+- name: restart sshd
+  service:
+    name: sshd
+    state: restarted
+    enabled: yes
+  tags: users

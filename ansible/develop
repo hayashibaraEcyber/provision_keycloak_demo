@@ -1,12 +1,17 @@
 [keycloak]
 192.168.33.12
 
-[keycloak:vars]
-server_domain=kc.example.com
-server_email=test@example.com
-
 [web]
-192.168.33.13
+192.168.33.12
 
 [ldap]
 192.168.33.14
+
+[all:vars]
+# keycloak
+kc_server_domain=kc.example.com
+kc_server_email=kc@example.com
+
+# web
+web_server_domain=web.example.com
+web_server_email=web@example.com

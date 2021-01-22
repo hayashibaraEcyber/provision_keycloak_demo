@@ -18,7 +18,7 @@
     msg: "{{ cpu_name }}"
   tags: docker
 
-- name: Check privkey.pem exists
+- name: check docker-compose exists
   stat: {
     path: "/usr/local/bin/docker-compose"
   }
@@ -32,8 +32,17 @@
     force: yes
     mode: 0755
   when:
+    - os_name.stdout is defined
+    - cpu_name.stdout is defined
     - fm.stat.exists is defined
     - not fm.stat.exists
+  tags: docker
+
+- name: check docker-compose exists again
+  stat: {
+    path: "/usr/local/bin/docker-compose"
+  }
+  register: fm
   tags: docker
 
 - name: create docker-compose symbolic link
@@ -41,7 +50,8 @@
     src: "/usr/local/bin/docker-compose"
     dest: "/usr/bin/docker-compose"
     state: link
+    force: yes
   when:
     - fm.stat.exists is defined
-    - not fm.stat.exists
+    - fm.stat.exists
   tags: docker

@@ -3,12 +3,17 @@
 [keycloak]
 192.168.33.12
 
-[keycloak:vars]
-keycloak_domain=kc.cypochi.com
-keycloak_email=test@example.com
-
 [web]
 192.168.33.13
 
 [ldap]
 192.168.33.14
+
+[all:vars]
+# keycloak
+kc_server_domain=demo-kc.cypochi.com
+kc_server_email=kc@example.com
+
+# web
+web_server_domain=demo-web.cypochi.com
+web_server_email=web@example.com

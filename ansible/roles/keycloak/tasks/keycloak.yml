@@ -1,3 +1,8 @@
+- name: show server domain
+  debug:
+    msg: "{{ server_domain }}"
+  tags: keycloak
+
 - name: add docker group
   group:
     name: keycloak

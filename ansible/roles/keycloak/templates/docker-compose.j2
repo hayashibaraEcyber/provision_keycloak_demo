@@ -1,7 +1,7 @@
 version: '3'
 services:
   nginx-proxy:
-    image: jwilder/nginx-proxy:0.8.0
+    image: jwilder/nginx-proxy:{{ nginx_proxy_ver }}
     container_name: nginx-proxy
     ports:
       - 80:80
@@ -16,7 +16,7 @@ services:
       - keycloak
 
   letsencrypt-nginx-proxy-companion:
-    image: jrcs/letsencrypt-nginx-proxy-companion:2.0.2
+    image: jrcs/letsencrypt-nginx-proxy-companion:{{ letsencrypt_nginx_proxy_companion_ver }}
     container_name: nginx-letsencrypt
     volumes:
       - ./nginx/certs:/etc/nginx/certs:rw
@@ -30,7 +30,7 @@ services:
       - keycloak
 
   keycloak:
-    image: jboss/keycloak:12.0.0
+    image: jboss/keycloak:{{ keycloak_ver }}
     container_name: keycloak
     environment:
       DB_VENDOR: mariadb
@@ -53,7 +53,7 @@ services:
       - keycloak
 
   mariadb:
-    image: mariadb:10.5.8
+    image: mariadb:{{ mariadb_ver }}
     container_name: mariadb
     volumes:
       - ./mysql/data:/var/lib/mysql
