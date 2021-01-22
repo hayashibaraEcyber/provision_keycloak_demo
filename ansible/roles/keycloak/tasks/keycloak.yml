@@ -18,18 +18,6 @@
     - nginx/log
   tags: keycloak
 
-- name: copy nginx conf
-  copy:
-    src: "{{ item }}"
-    dest: /home/keycloak/nginx/conf/
-    owner: keycloak
-    group: keycloak
-    mode: 0644
-  with_items:
-    - default.conf
-    - nginx.conf
-  tags: keycloak
-
 - name: copy docker-compose.yml
   template:
     src: docker-compose.j2
