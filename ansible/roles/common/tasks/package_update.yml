@@ -4,11 +4,6 @@
     path: /etc/yum.repos.d/docer-ce.repo
     state: absent
 
-- name: yum clean all
-  shell:  
-    name: '*'
-    state: latest
-
 - name: install epel for Amazon Linux2
   shell: "amazon-linux-extras install epel -y"
   changed_when: False

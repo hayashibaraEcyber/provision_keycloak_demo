@@ -3,7 +3,7 @@ docker_compose_ver: 1.27.4
 nginx_proxy_ver: 0.8.0
 letsencrypt_nginx_proxy_companion_ver: 2.0.2
 
-keycloak_ver: 12.0.0
+keycloak_ver: 12.0.2
 mariadb_ver: 10.5.8
 
 httpd_ver: 2.4.46-alpine
