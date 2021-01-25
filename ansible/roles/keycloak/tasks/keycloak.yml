@@ -3,24 +3,10 @@
     msg: "{{ server_domain }}"
   tags: keycloak
 
-- name: add docker group
+- name: add keycloak group
   group:
     name: keycloak
     state: present
-  tags: keycloak
-
-- name: create data/conf dir.
-  file:
-    path: "/home/keycloak/{{ item }}"
-    state: directory
-    owner: keycloak
-    group: keycloak
-    mode: 0755
-  with_items:
-    - mysql/data
-    - nginx/conf
-    - nginx/certs
-    - nginx/log
   tags: keycloak
 
 - name: copy docker-compose.yml

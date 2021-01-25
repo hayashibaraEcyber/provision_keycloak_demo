@@ -20,18 +20,16 @@
     state: latest
   tags: docker
 
-- name: add docker repo
-  get_url:
-    url: https://download.docker.com/linux/centos/docker-ce.repo
-    dest: /etc/yum.repos.d/docer-ce.repo
-  tags: docker
- 
+# - name: add docker repo
+#   get_url:
+#     url: https://download.docker.com/linux/centos/docker-ce.repo
+#     dest: /etc/yum.repos.d/docer-ce.repo
+#   tags: docker
+
 - name: install docker-ce
   yum: 
     name: 
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
+      - docker
     state: latest
   when: not ansible_check_mode
   tags: docker

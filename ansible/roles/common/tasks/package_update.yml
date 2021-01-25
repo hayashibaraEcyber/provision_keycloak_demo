@@ -1,7 +1,21 @@
+
+- name: remove docker repository
+  file:
+    path: /etc/yum.repos.d/docer-ce.repo
+    state: absent
+
+- name: yum clean all
+  shell:  
+    name: '*'
+    state: latest
+
+- name: install epel for Amazon Linux2
+  shell: "amazon-linux-extras install epel -y"
+  changed_when: False
+
 - name: yum install repos
   yum: 
     name:
-      - epel-release
       - https://repo.ius.io/ius-release-el7.rpm 
     state: latest
 
