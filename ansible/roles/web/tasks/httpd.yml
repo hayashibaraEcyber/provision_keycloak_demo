@@ -24,6 +24,9 @@
   with_items:
     - {file: httpd.conf, dest: /etc/httpd/conf/httpd.conf}
     - {file: index.html, dest: /var/www/html/index.html}
+    - {file: index_open.html, dest: /var/www/html/open/index.html}
+    - {file: index_closed.html, dest: /var/www/html/closed/index.html}
+    - {file: loggedout.html, dest: /var/www/html/closed/loggedout.html}
   tags: web
 
 - name: copy auth_openidc.conf
