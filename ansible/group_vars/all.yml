@@ -6,4 +6,7 @@ letsencrypt_nginx_proxy_companion_ver: 2.0.2
 keycloak_ver: 12.0.2
 mariadb_ver: 10.5.8
 
-httpd_ver: 2.4.46-alpine
+httpd_openidc_ver: 2.4
+
+kc_server_port: 8080
+web_server_port: 1080

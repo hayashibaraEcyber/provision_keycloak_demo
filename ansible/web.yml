@@ -3,6 +3,7 @@
   vars:
     server_domain: "{{ web_server_domain }}"
     server_email: "{{ web_server_email }}"
+    server_port: "{{ web_server_port }}"
   roles:
     - common
     - docker

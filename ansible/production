@@ -4,7 +4,7 @@
 35.72.112.46
 
 [web]
-192.168.33.13
+3.115.161.215
 
 [ldap]
 192.168.33.14
@@ -16,4 +16,8 @@ kc_server_email=hayashibara@e-cyber.co.jp
 
 # web
 web_server_domain=demo-web.cypochi.com
-web_server_email=web@example.com
+web_server_email=hayashibara@e-cyber.co.jp
+
+odic_realm=demouser
+odic_client_id=apache24
+odic_client_secret=xxx

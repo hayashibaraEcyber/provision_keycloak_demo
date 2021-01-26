@@ -7,7 +7,9 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx/certs:/etc/nginx/certs:ro
+      - certs:/etc/nginx/certs:ro
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
     restart: always
     depends_on:
@@ -19,8 +21,10 @@ services:
     image: jrcs/letsencrypt-nginx-proxy-companion:{{ letsencrypt_nginx_proxy_companion_ver }}
     container_name: nginx-letsencrypt
     volumes:
-      - ./nginx/certs:/etc/nginx/certs:rw
+      - certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      NGINX_PROXY_CONTAINER: nginx-proxy
     volumes_from:
       - nginx-proxy
     restart: always
@@ -30,20 +34,27 @@ services:
       - web
 
   httpd:
-    image: httpd:{{ httpd_ver }}
+    image: solsson/httpd-openidc:{{ httpd_openidc_ver }}
     container_name: httpd
     volumes:
-      - /etc/httpd/conf/:/usr/local/apache2/conf/
+      - /etc/httpd/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - /etc/httpd/conf/auth_openidc.conf:/usr/local/apache2/conf/auth_openidc.conf
       - /var/www/html/:/usr/local/apache2/htdocs/
       - /var/log/httpd/:/var/log/apache2/:rw
     environment:
       VIRTUAL_HOST: {{ server_domain }}
+      VIRTUAL_PORT: {{ server_port }}
       LETSENCRYPT_HOST: {{ server_domain }}
       LETSENCRYPT_EMAIL: {{ server_email }}
     ports:
-      - 18080:80
+      - {{ server_port }}:80
     networks:
       - web
+
+volumes:
+  certs:
+  html:
+  vhost:
 
 networks:
   web:

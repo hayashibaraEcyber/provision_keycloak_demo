@@ -47,12 +47,11 @@ services:
       JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
       PROXY_ADDRESS_FORWARDING: "true"
       VIRTUAL_HOST: {{ server_domain }}
-      VIRTUAL_PORT: 8080
+      VIRTUAL_PORT: {{ server_port }}
       LETSENCRYPT_HOST: {{ server_domain }}
       LETSENCRYPT_EMAIL: {{ server_email }}
     ports:
-      - 8080:8080
-      - 8443:8443
+      - {{ server_port }}:8080
     command: ["-b 0.0.0.0", "--server-config=standalone.xml"]
     depends_on:
       - mariadb

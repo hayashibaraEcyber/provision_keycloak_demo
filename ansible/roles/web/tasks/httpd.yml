@@ -12,9 +12,25 @@
     - /etc/httpd/conf/
     - /var/log/httpd/
     - /var/www/html/
-    - /home/web/nginx/conf
-    - /home/web/nginx/certs
-    - /home/web/nginx/log
+    - /var/www/html/closed/
+    - /var/www/html/open/
+  tags: web
+
+- name: copy httpd.conf
+  copy:
+    src: "{{ item.file }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+  with_items:
+    - {file: httpd.conf, dest: /etc/httpd/conf/httpd.conf}
+    - {file: index.html, dest: /var/www/html/index.html}
+  tags: web
+
+- name: copy auth_openidc.conf
+  template:
+    src: auth_openidc.j2
+    dest: /etc/httpd/conf/auth_openidc.conf
+    mode: 0644
   tags: web
 
 - name: copy docker-compose.yml
