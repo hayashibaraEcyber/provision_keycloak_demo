@@ -1,0 +1,3 @@
+# vars 
+users:
+  - {name: "ecyber", groups: "wheel"}

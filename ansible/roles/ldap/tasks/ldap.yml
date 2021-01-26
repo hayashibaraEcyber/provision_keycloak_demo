@@ -1,0 +1,30 @@
+- name: show server domain
+  debug:
+    msg: "{{ ldap_server_domain }}"
+  tags: ldap
+
+- name: set hostname
+  hostname:
+    name: "{{ ldap_server_domain }}"
+  tags: ldap
+
+- name: yum install 389ds/ldap
+  yum: 
+    name: 
+      - 389-ds-base
+      - 389-admin
+      - openldap-clients
+    state: latest
+  tags: ldap
+
+- name: 389ds silent setup file
+  template:
+    src: templates/install.j2
+    dest: /tmp/install.inf
+    mode: 0644
+  tags: ldap
+
+- name: set up 389ds
+  shell: setup-ds-admin.pl -s -f /tmp/install.inf
+  become: yes
+  tags: ldap

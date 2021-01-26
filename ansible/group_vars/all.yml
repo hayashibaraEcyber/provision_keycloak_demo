@@ -10,3 +10,4 @@ httpd_openidc_ver: 2.4
 
 kc_server_port: 8080
 web_server_port: 1080
+ldap_server_port: 389

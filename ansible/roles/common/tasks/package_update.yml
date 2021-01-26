@@ -7,10 +7,12 @@
 - name: install epel for Amazon Linux2
   shell: "amazon-linux-extras install epel -y"
   changed_when: False
+  ignore_errors: yes
 
 - name: yum install repos
   yum: 
     name:
+      - epel-release
       - https://repo.ius.io/ius-release-el7.rpm 
     state: latest
 

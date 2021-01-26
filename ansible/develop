@@ -5,7 +5,7 @@
 192.168.33.12
 
 [ldap]
-192.168.33.14
+192.168.33.12
 
 [all:vars]
 # keycloak
@@ -15,3 +15,12 @@ kc_server_email=kc@example.com
 # web
 web_server_domain=web.example.com
 web_server_email=web@example.com
+
+odic_realm=demouser
+odic_client_id=apache24
+odic_client_secret=xxx
+
+# ldap
+ldap_server_domain=ldap.example.com
+ldap_suffix="dc=ldap,dc=example,dc=com"
+ldap_password=abcXYZ0123
