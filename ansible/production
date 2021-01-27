@@ -21,11 +21,12 @@ web_server_email=hayashibara@e-cyber.co.jp
 ## web用 本番適用の時は書き換える
 odic_realm=demouser
 odic_client_id=apache24
-odic_client_secret=xxx
+odic_client_secret=53425a46-8fbc-43de-86ff-ce776ba1b756
 
 # ldap
 ldap_server_domain=demo-ldap.cypochi.com
 ldap_suffix="dc=demo-ldap,dc=cypochi,dc=com"
+ldap_admin_domain=cypochi.com
 
 ## ldap用 passwordは本番適用の時は書き換える
 ldap_password=xxx

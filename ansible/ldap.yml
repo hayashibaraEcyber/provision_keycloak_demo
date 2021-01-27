@@ -1,5 +1,7 @@
 - hosts: ldap
   become: yes
+  vars:
+    server_domain: "{{ ldap_server_domain }}"
   roles:
     - common
     - ldap

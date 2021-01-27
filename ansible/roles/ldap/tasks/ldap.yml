@@ -1,8 +1,3 @@
-- name: show server domain
-  debug:
-    msg: "{{ ldap_server_domain }}"
-  tags: ldap
-
 - name: set hostname
   hostname:
     name: "{{ ldap_server_domain }}"
@@ -17,14 +12,17 @@
     state: latest
   tags: ldap
 
-- name: 389ds silent setup file
+- name: 389ds setup script
   template:
-    src: templates/install.j2
+    src: install.j2
     dest: /tmp/install.inf
+    owner: root
+    group: root
     mode: 0644
   tags: ldap
 
-- name: set up 389ds
-  shell: setup-ds-admin.pl -s -f /tmp/install.inf
-  become: yes
-  tags: ldap
+# - name: set up 389ds
+#   shell: /root/setup-ds.sh
+#   become: yes
+#   ignore_errors: yes
+#   tags: ldap

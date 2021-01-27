@@ -1,14 +1,9 @@
 [General]
 FullMachineName={{ ldap_server_domain }}
 SuiteSpotUserID=nobody
-
 [slapd]
-ServerPort={{ ldap_server_port }}
+ServerPort={{ ldap_server_port }} 
 ServerIdentifier=ldap
 Suffix={{ ldap_suffix }}
-RootDN=cn=admin
+RootDN=cn=Directory Manager
 RootDNPwd={{ ldap_password }}
-
-[admin] 
-ServerAdminID=admin 
-ServerAdminPwd={{ ldap_password }}
