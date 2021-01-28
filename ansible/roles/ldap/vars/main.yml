@@ -1,3 +1,4 @@
 # vars 
 users:
   - {name: "ecyber", groups: "wheel"}
+  - {name: "ldap", groups: "wheel"}

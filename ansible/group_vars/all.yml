@@ -8,6 +8,8 @@ mariadb_ver: 10.5.8
 
 httpd_openidc_ver: 2.4
 
+openldap_ver: 1.4.0
+
 kc_server_port: 8080
 web_server_port: 1080
 ldap_server_port: 389

@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  ldap-server:
+    image: osixia/openldap:{{ openldap_ver }}
+    restart: always
+    container_name: ldap
+    environment:
+      LDAP_ORGANISATION: "people"
+      LDAP_DOMAIN: {{ ldap_admin_domain }}
+      LDAP_ADMIN_PASSWORD: {{ ldap_password }}
+    networks:
+      - ldap
+
+  ldap-admin:
+    image: osixia/phpldapadmin:latest
+    restart: always
+    container_name: ldap-admin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "ldap"
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "8080:80"
+    links:
+      - "ldap-server:ldap"
+    networks:
+      - ldap
+
+networks:
+  ldap:

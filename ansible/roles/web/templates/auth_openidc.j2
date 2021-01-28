@@ -1,12 +1,12 @@
 OIDCProviderMetadataURL https://{{ kc_server_domain }}/auth/realms/{{ odic_realm }}/.well-known/openid-configuration
-OIDCRedirectURI https://{{ web_server_domain }}/private/redirect_uri
+OIDCRedirectURI https://{{ web_server_domain }}/closed/redirect_uri
 OIDCCryptoPassphrase 0123456789
 OIDCClientID {{ odic_client_id }}
 OIDCClientSecret {{ odic_client_secret }}
 OIDCProviderTokenEndpointAuth client_secret_basic
 
 OIDCRemoteUserClaim email
-OIDCScope "openid email"
+OIDCScope "openid email profile"
 OIDCResponseType code
 
 <Location /closed/>

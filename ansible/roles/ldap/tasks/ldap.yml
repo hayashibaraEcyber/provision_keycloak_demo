@@ -1,28 +1,20 @@
-- name: set hostname
-  hostname:
-    name: "{{ ldap_server_domain }}"
+- name: show server domain
+  debug:
+    msg: "{{ server_domain }}"
   tags: ldap
 
-- name: yum install 389ds/ldap
-  yum: 
-    name: 
-      - 389-ds-base
-      - 389-admin
-      - openldap-clients
-    state: latest
-  tags: ldap
-
-- name: 389ds setup script
+- name: copy docker-compose.yml
   template:
-    src: install.j2
-    dest: /tmp/install.inf
+    src: docker-compose.j2
+    dest: /home/ldap/docker-compose.yml
     owner: root
     group: root
     mode: 0644
   tags: ldap
 
-# - name: set up 389ds
-#   shell: /root/setup-ds.sh
-#   become: yes
-#   ignore_errors: yes
-#   tags: ldap
+- name: spin up docker-compose
+  shell: docker-compose up -d
+  args:
+    chdir: /home/ldap
+  become: yes
+  tags: ldap
