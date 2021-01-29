@@ -1,0 +1,10 @@
+- hosts: fess
+  become: yes
+  vars:
+    server_domain: "{{ fess_server_domain }}"
+    server_email: "{{ fess_server_email }}"
+    server_port: "{{ fess_server_port }}"
+  roles:
+    - common
+    - docker
+    - fess

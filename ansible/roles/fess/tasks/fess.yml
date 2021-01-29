@@ -1,0 +1,27 @@
+- name: show server domain
+  debug:
+    msg: "{{ server_domain }}"
+  tags: fess
+
+- name: set max_map_count
+  sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    state: present
+  tags: fess
+
+- name: copy docker-compose.yml
+  template:
+    src: docker-compose.j2
+    dest: /home/fess/docker-compose.yml
+    owner: root
+    group: root
+    mode: 0644
+  tags: fess
+
+- name: spin up docker-compose
+  shell: docker-compose up -d
+  args:
+    chdir: /home/fess
+  become: yes
+  tags: fess

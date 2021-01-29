@@ -1,0 +1,99 @@
+version: '3'
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy:{{ nginx_proxy_ver }}
+    container_name: nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: always
+    depends_on:
+      - fess
+    networks:
+      - esnet
+
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion:{{ letsencrypt_nginx_proxy_companion_ver }}
+    container_name: nginx-letsencrypt
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes_from:
+      - nginx-proxy
+    restart: always
+    depends_on:
+      - nginx-proxy
+    networks:
+      - esnet
+
+  elasticsearch:
+    image: ghcr.io/codelibs/fess-elasticsearch-oss:{{ elasticsearch_ver }}
+    container_name: elasticsearch
+    environment:
+      - node.name=elasticsearch
+      - discovery.seed_hosts=elasticsearch
+      - cluster.initial_master_nodes=elasticsearch
+      - cluster.name=fess-es
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "FESS_DICTIONARY_PATH=/usr/share/elasticsearch/config/dictionary"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65535
+        hard: 65535
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      - esdictionary:/usr/share/elasticsearch/config/dictionary
+    ports:
+      - 9200:9200
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    networks:
+      - esnet
+
+  fess:
+    image: ghcr.io/codelibs/fess:{{ fess_ver }}
+    container_name: fess
+    environment:
+      - RUN_ELASTICSEARCH=false
+      - "ES_HTTP_URL=http://elasticsearch:9200"
+      - "FESS_DICTIONARY_PATH=/usr/share/elasticsearch/config/dictionary/"
+      - VIRTUAL_HOST={{ server_domain }}
+      - VIRTUAL_PORT={{ server_port }}
+      - LETSENCRYPT_HOST={{ server_domain }}
+      - LETSENCRYPT_EMAIL={{ server_email }}
+    ports:
+      - 8080:8080
+    depends_on:
+      - elasticsearch
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    networks:
+      - esnet
+
+volumes:
+  certs:
+  html:
+  vhost:
+  esdata:
+  esdictionary:
+
+networks:
+  esnet:
+    driver: bridge

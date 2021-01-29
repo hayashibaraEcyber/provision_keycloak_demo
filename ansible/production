@@ -30,3 +30,7 @@ ldap_admin_domain=cypochi.com
 
 ## ldap用 passwordは本番適用の時は書き換える
 ldap_password=xxx
+
+# fess
+fess_server_domain=demo-fess.cypochi.com
+fess_server_email=hayashibara@e-cyber.co.jp

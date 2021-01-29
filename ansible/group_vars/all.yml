@@ -10,6 +10,11 @@ httpd_openidc_ver: 2.4
 
 openldap_ver: 1.4.0
 
+fess_ver: 13.10.1
+elasticsearch_ver: 7.10.1
+
+# port
 kc_server_port: 8080
 web_server_port: 1080
 ldap_server_port: 389
+fess_server_port: 8080
