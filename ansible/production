@@ -7,7 +7,10 @@
 3.115.161.215
 
 [ldap]
-192.168.33.14
+18.180.10.194
+
+[fess]
+3.225.24.240
 
 [all:vars]
 # keycloak
@@ -25,11 +28,12 @@ odic_client_secret=53425a46-8fbc-43de-86ff-ce776ba1b756
 
 # ldap
 ldap_server_domain=demo-ldap.cypochi.com
+ldap_server_email=hayashibara@e-cyber.co.jp
 ldap_suffix="dc=demo-ldap,dc=cypochi,dc=com"
 ldap_admin_domain=cypochi.com
-
+ldap_admin_server_port=8080
 ## ldap用 passwordは本番適用の時は書き換える
-ldap_password=xxx
+ldap_password=Ecyber00
 
 # fess
 fess_server_domain=demo-fess.cypochi.com

@@ -12,7 +12,7 @@
 - name: yum install repos
   yum: 
     name:
-      - epel-release
+      # - epel-release
       - https://repo.ius.io/ius-release-el7.rpm 
     state: latest
 

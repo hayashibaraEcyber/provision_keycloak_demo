@@ -9,6 +9,8 @@ mariadb_ver: 10.5.8
 httpd_openidc_ver: 2.4
 
 openldap_ver: 1.4.0
+phpldapadmin_ver: 0.9.0
+
 
 fess_ver: 13.10.1
 elasticsearch_ver: 7.10.1
