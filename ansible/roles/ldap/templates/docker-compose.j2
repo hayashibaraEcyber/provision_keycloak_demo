@@ -1,39 +1,6 @@
 version: '3'
 
 services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy:{{ nginx_proxy_ver }}
-    container_name: nginx-proxy
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - certs:/etc/nginx/certs:ro
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    restart: always
-    depends_on:
-      - ldap-admin
-    networks:
-      - default
-
-  letsencrypt-nginx-proxy-companion:
-    image: jrcs/letsencrypt-nginx-proxy-companion:{{ letsencrypt_nginx_proxy_companion_ver }}
-    container_name: nginx-letsencrypt
-    volumes:
-      - certs:/etc/nginx/certs:rw
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      NGINX_PROXY_CONTAINER: nginx-proxy
-    volumes_from:
-      - nginx-proxy
-    restart: always
-    depends_on:
-      - nginx-proxy
-    networks:
-      - default
-
   ldap-server:
     image: osixia/openldap:{{ openldap_ver }}
     restart: always
@@ -50,17 +17,17 @@ services:
     restart: always
     container_name: ldap-admin
     environment:
-      PHPLDAPADMIN_LDAP_HOSTS: "ldap-server"
+      PHPLDAPADMIN_LDAP_HOSTS: "ldap"
       PHPLDAPADMIN_HTTPS: "false"
       VIRTUAL_HOST: {{ server_domain }}
       VIRTUAL_PORT: {{ server_port }}
       LETSENCRYPT_HOST: {{ server_domain }}
       LETSENCRYPT_EMAIL: {{ server_email }}
     ports:
-      - "8080:80"
+      - "80:80"
       - "8443:443"
     expose:
-      - "8080"
+      - "80"
     links:
       - "ldap-server:ldap"
     depends_on:
